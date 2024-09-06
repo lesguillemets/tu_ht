@@ -9,6 +9,7 @@ body, html {
 	width:100%;
 	display:grid;
 	align-items:center;
+	justify-content: center;
 	grid-template-columns: 1fr 3fr 1fr;
 	grid-template-rows: 1fr 1fr 1fr;
 	/* background-color: rgba(100,100,100,0.5); */
@@ -65,3 +66,8 @@ body, html {
 }
 
 
+.center-image img{
+	max-width:100%;
+	display:block;
+	margin:auto;
+}
