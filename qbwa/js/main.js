@@ -96,13 +96,13 @@ function switchGridToQuestions() {
 }
 
 function switchGridToDownload() {
+	clearQuestionPage();
 	document.getElementById('header').innerText = "Thanks";
 	document.getElementById('barbox').innerHTML = `
 			<div class="center-image">
 				<img src="https://live.staticflickr.com/778/20640894926_cdd2ccc266_n.jpg" alt="">
 			</div>
 	`;
-	clearQuestionPage();
 	document.getElementById('next').innerText = "Download";
 	setButtonClick( downloadResult );
 }
