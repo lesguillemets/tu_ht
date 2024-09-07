@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="./main.css">
+	<script src="./questionPage.js"></script>
 	<title></title>
 </head>
 <body>
@@ -10,11 +11,11 @@
 		<div class="header-text">当てはまるところを選んでください</div>
 		<div class="pre-content descr">リラックスしている</div>
 		<div class="barbox">
-			<input class="range-bar" type="range" min="0" max="1" step="any" />
+			<input id="response" class="range-bar" type="range" min="0" max="1" step="any" />
 		</div>
 		<div class="post-content descr">ひどく緊張している</div>
 		<div class="footer-text">
-			<a href="./02.html">次へ</a>
+			<a id='next' href="./02.html">次へ</a>
 		</div>
 	</div>
 </body>
