@@ -106,3 +106,7 @@ input.range-bar {
 	display:block;
 	margin:auto;
 }
+
+button.button {
+	font-size:14pt;
+}
