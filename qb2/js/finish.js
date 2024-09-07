@@ -13,7 +13,7 @@ function prepareFinish() {
 	const timeStamp = datetime_format(cur);
 	const tsvLine = [timeStamp, partID, ...responses].join('\t');
 	console.log(tsvLine);
-	const blob = new Blob([tsvLine], {type: "text/csv;charset=utf-8"})
+	const blob = new Blob([tsvLine], {type: "text/tab-separated-values;charset=utf-8"})
 	const url = URL.createObjectURL(blob);
 	let fin = document.getElementById('finish');
 	fin.setAttribute('href', url);
