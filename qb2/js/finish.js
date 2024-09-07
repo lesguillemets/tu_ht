@@ -13,6 +13,15 @@ function finish() {
 	const timeStamp = datetime_format(cur);
 	const tsvLine = [timeStamp, partID, ...responses].join('\t');
 	console.log(tsvLine);
+	const blob = new Blob([tsvLine], {type: "text/csv;charset=utf-8"})
+	const url = URL.createObjectURL(blob);
+	let anch = document.createElement('a');
+	anch.setAttribute('href', url);
+	anch.setAttribute('download', [timeStamp, '-', partID, '.tsv'].join(''));
+	anch.style.display = 'none';
+	document.body.appendChild(anch);
+	anch.click();
+	document.body.removeChild(anch);
 }
 
 function toTwoDigits(n) {
