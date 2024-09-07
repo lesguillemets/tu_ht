@@ -1,7 +1,7 @@
 const responsesSavedName = "responses";
 
 
-function finish() {
+function prepareFinish() {
 	const partID = sessionStorage.getItem("partID");
 	const storedRes = sessionStorage.getItem(responsesSavedName);
 	if (storedRes == null) {
@@ -15,13 +15,18 @@ function finish() {
 	console.log(tsvLine);
 	const blob = new Blob([tsvLine], {type: "text/csv;charset=utf-8"})
 	const url = URL.createObjectURL(blob);
-	let anch = document.createElement('a');
-	anch.setAttribute('href', url);
-	anch.setAttribute('download', [timeStamp, '-', partID, '.tsv'].join(''));
-	anch.style.display = 'none';
-	document.body.appendChild(anch);
-	anch.click();
-	document.body.removeChild(anch);
+	let fin = document.getElementById('finish');
+	fin.setAttribute('href', url);
+	fin.setAttribute('download', [timeStamp, '-', partID, '.tsv'].join(''));
+	fin.innerHTML = "結果をダウンロード";
+	// let anch = document.createElement('a');
+	// anch.setAttribute('href', url);
+	// anch.setAttribute('download', [timeStamp, '-', partID, '.tsv'].join(''));
+	// anch.style.display = 'none';
+	// document.body.appendChild(anch);
+	// anch.click();
+	// document.body.removeChild(anch);
+
 }
 
 function toTwoDigits(n) {
@@ -48,5 +53,5 @@ function datetime_format(d){
 
 window.addEventListener(
 	'load',
-	()=>document.getElementById('finish').addEventListener('click', finish)
+	prepareFinish
 );
