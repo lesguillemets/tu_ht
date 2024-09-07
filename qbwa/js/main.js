@@ -1,4 +1,4 @@
-
+const responsesSavedName = "responses";
 
 class Question{
 	constructor(header, pre, post, next){
@@ -82,6 +82,7 @@ function switchGridToInitialMode() {
 }
 
 function switchGridToQuestions() {
+	// parepare input[type=range] into #barbox
 	let rangeInput = document.createElement('input');
 	rangeInput.type = "range";
 	rangeInput.id = 'response';
@@ -94,20 +95,97 @@ function switchGridToQuestions() {
 	cell.appendChild(rangeInput);
 }
 
+function switchGridToDownload() {
+	document.getElementById('header').innerText = "Thanks";
+	document.getElementById('barbox').innerHTML = `
+			<div class="center-image">
+				<img src="https://live.staticflickr.com/778/20640894926_cdd2ccc266_n.jpg" alt="">
+			</div>
+	`;
+	document.getElementById('next').innerText = "Download";
+	setButtonClick( downloadResult );
+}
+
+function gatherResponse(i) {
+	const res = document.getElementById('response').value;
+	const storedRes = sessionStorage.getItem(responsesSavedName);
+	if (storedRes == null) {
+		alert("多分質問を始めるページを経由してない");
+		return 0;
+	}
+	let responses = JSON.parse(storedRes);
+	if (responses.length !== i) { console.log("ERROR? maybe wrong number of responses "+ responses);}
+	responses.push(res);
+	sessionStorage.setItem(responsesSavedName, JSON.stringify(responses));
+}
+
+function downloadResult() {
+	const partID = sessionStorage.getItem("partID");
+	const storedRes = sessionStorage.getItem(responsesSavedName);
+	if (storedRes == null) {
+		alert("多分質問を始めるページを経由してない");
+		return 0;
+	}
+	const responses = JSON.parse(storedRes);
+	const cur = new Date(); // current time
+	const timeStamp = datetime_format(cur);
+	const tsvLine = [timeStamp, partID, ...responses].join('\t');
+	console.log(tsvLine);
+	const blob = new Blob([tsvLine], {type: "text/tab-separated-values;charset=utf-8"})
+	const url = URL.createObjectURL(blob);
+	let anch = document.createElement('a');
+	anch.setAttribute('href', url);
+	anch.setAttribute('download', [timeStamp, '-', partID, '.tsv'].join(''));
+	anch.style.display = 'none';
+	document.body.appendChild(anch);
+	anch.click();
+	document.body.removeChild(anch);
+}
+
+function toTwoDigits(n) {
+	// n : integer, returnd 01..99
+	const s = String(n).padStart(2,'0');
+	return s;
+}
+function datetime_format(d){
+	// hhmmss
+	const timestr = [
+		toTwoDigits(d.getHours()),
+		toTwoDigits(d.getMinutes()),
+		toTwoDigits(d.getSeconds())
+	].join('');
+	// 2024-09-23-103312
+	const formatted = [
+		d.getFullYear(),
+		toTwoDigits(d.getMonth()+1),
+		toTwoDigits(d.getDate()),
+		timestr
+	].join('-');
+	return formatted;
+}
+
 function runQuestion(q, n) {
 	console.log(q[n]);
 	q[n].render();
 	if (q.length > n) {
 		// still more to go!
-		setButtonClick(() => runQuestion(q, n+1));
+		setButtonClick(() =>  {
+			gatherResponse(n);
+			runQuestion(q, n+1);
+		});
 	}
 	if (q.length === n) {
 		// this is the last question!
+		setButtonClick( () => {
+			gatherResponse(n);
+			switchGridToDownload();
+		});
 	}
 }
 
 
 function startQuestions(q) {
+	// start receiving question
 	console.log("there are " + q.length + " questions");
 	const partID = document.getElementById('participantID').value;
 	if (partID === '') {
@@ -120,9 +198,9 @@ function startQuestions(q) {
 	// If you want to save other data types, you have to convert them
 	// to strings. For plain objects and arrays, you can use JSON.stringify().
 	// https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
-	sessionStorage.setItem("responses", JSON.stringify(responses));
-	clearQuestionPage();
+	sessionStorage.setItem(responsesSavedName, JSON.stringify(responses));
 	switchGridToQuestions();
+	clearQuestionPage();
 	runQuestion(q, 0);
 }
 
