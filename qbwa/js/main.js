@@ -102,6 +102,7 @@ function switchGridToDownload() {
 				<img src="https://live.staticflickr.com/778/20640894926_cdd2ccc266_n.jpg" alt="">
 			</div>
 	`;
+	clearQuestionPage();
 	document.getElementById('next').innerText = "Download";
 	setButtonClick( downloadResult );
 }
