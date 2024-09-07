@@ -165,17 +165,20 @@ function datetime_format(d){
 }
 
 function runQuestion(q, n) {
+	// n 番目 (n=0, 1, 2..) の質問に対応
 	console.log(q[n]);
+	// n番目の質問を描画
 	q[n].render();
-	if (q.length > n) {
-		// still more to go!
+	// ボタンをクリックしたあとの動作を決める
+	// 次がまだ質問なら再度個々を通る
+	if (q.length > n+1) {
 		setButtonClick(() =>  {
 			gatherResponse(n);
 			runQuestion(q, n+1);
 		});
 	}
-	if (q.length === n) {
-		// this is the last question!
+	// これが最後の質問なので，次クリックされたら最後の画面に映る
+	else if (q.length === n+1) {
 		setButtonClick( () => {
 			gatherResponse(n);
 			switchGridToDownload();
