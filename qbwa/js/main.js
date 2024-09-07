@@ -19,7 +19,7 @@ class Question{
 }
 
 function clevAppend(node, child) {
-	if (typeof child === "object" && object.nodeType===1) {
+	if (typeof child === "object" && child.nodeType===1) {
 		// assume child is a node
 		return(node.appendChild(child));
 	} else if (typeof child ==='string') {
@@ -39,11 +39,11 @@ function getQuestions() {
 	imageCont.classList.add("center-image");
 	let preImg = document.createElement('img');
 	preImg.src = "https://live.staticflickr.com/3852/14566879637_13d5d2a0b1_n.jpg";
-	let pre = imageCont;
+	let pre = imageCont.cloneNode();
 	pre.appendChild(preImg);
 	let postImg = document.createElement('img');
 	postImg.src = "https://live.staticflickr.com/3835/14752671885_b9f0b22a82_n.jpg";
-	let post = imageCont;
+	let post = imageCont.cloneNode();
 	post.appendChild(postImg);
 	const q2 = new Question (
 		"どちらかというと",
