@@ -1,7 +1,7 @@
 {
   "name": "TriMkQb2WA",
   "short_name": "qb2wa",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#fff",
   "theme_color": "#fff"
